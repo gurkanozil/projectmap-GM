@@ -115,16 +115,17 @@
         const myInput = document.getElementById('result');
         const myOperator = document.getElementById('operator');
 
-        let currentInput = '';
-        let currentOperator = '';
-        let previousInput = '';
+        // globale variabelen leegen zodat ze gevuld kunnen worden
+        let currentInput = ''; // De waarde van de huidige invoer
+        let currentOperator = ''; // De waarde van de huidige operator
+        let previousInput = ''; // De waarde van de vorige invoer
 
-        // functie voor cijfers
+        // functie voor als er geklikt word op een getal
         function klikNummer(number) {
-            console.log('Nummer geklikt: ' + number);
-            
+            console.log('Nummer geklikt: ' + number);            
             // vervang "0" als eerste getal wordt ingevoerd
             if (myInput.value === '0' || myInput.value === '') {
+                // vervang "0" als eerste getal wordt ingevoerd
                 currentInput = number;
             } else if (number === '.' && currentInput.indexOf('.') === -1) {
                 // voeg punt alleen toe als er nog geen punt is
@@ -134,7 +135,7 @@
                 currentInput += number;
             }
 
-            myInput.value = currentInput;  // bijwerken van resultaat
+            myInput.value = currentInput;  // bijwerken en opslaan van resultaat
         }
 
         // functie voor de operators zoals +,-,*,/
@@ -145,12 +146,12 @@
             if (currentInput !== '') {
                 previousInput = currentInput;
                 currentInput = '';
-                myOperator.value = operator;
-                currentOperator = operator;
+                myOperator.value = operator; // dit slaat de waarde van de huidige operator op
+                currentOperator = operator; // dit slaat de waarde van de huidige operator op
             }
         }
 
-        // functie voor clear
+        // functie voor clear maakt de waardes weer leeg
         function klikAnnuleer() {
             console.log('clear geklikt');
             currentInput = '';
@@ -160,7 +161,7 @@
             myOperator.value = '';
         }
 
-        // functie voor het klikken op =
+        // functie voor het klikken op = laat resultaat zien
         function klikEquals() {
             console.log('= geklikt');
             if (previousInput !== '' && currentInput !== '' && currentOperator !== '') {
@@ -168,7 +169,7 @@
                 const num1 = parseFloat(previousInput);
                 const num2 = parseFloat(currentInput);
 
-                // berekeningen op basis van de operator
+                // berekeningen op basis van de operator met switch case gevonden op https://stackoverflow.com/questions/65649146/switch-case-in-js
                 switch (currentOperator) {
                     case '+':
                         result = num1 + num2;
