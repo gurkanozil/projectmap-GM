@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Calculator</title>
+    <title>Calculator GM</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -45,28 +45,27 @@
             padding: 20px 0;
             font-size: 30px;
             cursor: pointer;
-            box-shadow: -1px -1px 4px rgba(0, 0, 0, 0.6) inset;
+            box-shadow: -1px -1px 4px  rgba(0,0,0,0.6) inset;
         }
-
-        #numbers div {
+        #numbers div{
             padding: 30px 0 0 0
         }
 
         #numbers div:active,
         #operators div:active {
-            box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6) inset;
+           
+            box-shadow: 1px 1px 4px  rgba(0,0,0,0.6) inset;
         }
-
-        #screen {
+        #screen{
             margin: 18px;
             width: calc(100% - 30px);
-            box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.6) inset;
-            background-color: rgba(239, 239, 239, 0.3);
+            box-shadow: 3px 3px 4px  rgba(0,0,0,0.6) inset;
+            background-color:rgba(239, 239, 239, 0.3);
             display: flex;
+
         }
 
-        #result,
-        #operator {
+        #result, #operator {
             width: 100%;
             height: 100px;
             padding: 20px;
@@ -75,7 +74,6 @@
             text-align: right;
             border: none;
         }
-
         #operator {
             width: 10%;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -87,9 +85,8 @@
 <body>
     <div id="calculator">
         <div id="screen">
-            <input type="text" id="result" placeholder="0" value="" disabled>
-            <input type="text" id="operator" disabled>
-        </div>
+        <input type="text" id="result" placeholder ="0" value=""  disabled>
+        <input type="text" id="operator" disabled></div>
         <div id="keys">
             <div id="numbers">
                 <div onclick="onClickNumber('7')">7</div>
@@ -114,14 +111,14 @@
             </div>
         </div>
     </div>
-
     <script>
-        // Referenties naar de input elementen
+        // Gebruik van 'let' en 'const' voor variabelen
         const myInput = document.getElementById('result');
         const myOperator = document.getElementById('operator');
 
-        let currentInput = '';  // Huidige invoer
+        let currentInput = '';  // Huidige invoer (cijfers en punt)
         let currentOperator = '';  // Huidige operator
+        let previousInput = '';  // Vorige invoer (voor het uitvoeren van de berekeningen)
 
         // Functie voor het klikken op cijfers en punt
         function onClickNumber(number) {
@@ -133,9 +130,14 @@
         // Functie voor het klikken op een operator
         function onClickOperator(operator) {
             console.log('Operator geklikt: ' + operator);
-            currentOperator = operator;
-            myOperator.value = operator;  // Bijwerken van het operator scherm
-            currentInput = '';  // Reset de invoer na het selecteren van een operator
+
+            if (currentInput !== '') {
+                // Sla de vorige invoer op en reset de huidige invoer
+                previousInput = currentInput;
+                currentInput = '';
+                myOperator.value = operator;  // Bijwerken van het operator scherm
+                currentOperator = operator;
+            }
         }
 
         // Functie voor het klikken op 'C' (Clear)
@@ -143,6 +145,7 @@
             console.log('Clear geklikt');
             currentInput = '';
             currentOperator = '';
+            previousInput = '';
             myInput.value = '';
             myOperator.value = '';
         }
@@ -150,11 +153,12 @@
         // Functie voor het klikken op '=' (equals)
         function onClickEquals() {
             console.log('Equals geklikt');
-            if (currentOperator && currentInput) {
+            if (previousInput !== '' && currentInput !== '' && currentOperator !== '') {
                 let result;
-                const num1 = parseFloat(myInput.value);
+                const num1 = parseFloat(previousInput);
                 const num2 = parseFloat(currentInput);
 
+                // Berekeningen op basis van de operator
                 switch (currentOperator) {
                     case '+':
                         result = num1 + num2;
@@ -170,13 +174,16 @@
                         break;
                     default:
                         result = 'Error';
+                        break;
                 }
 
-                myInput.value = result;
+                myInput.value = result;  // Bijwerken van het resultaat scherm
                 myOperator.value = '';  // Reset de operator na het berekenen
                 currentInput = result.toString();  // Zet de uitkomst als de nieuwe invoer
+                previousInput = '';  // Reset de vorige invoer na het berekenen
             }
         }
     </script>
 </body>
+
 </html>
