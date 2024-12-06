@@ -89,76 +89,86 @@
         <input type="text" id="operator" disabled></div>
         <div id="keys">
             <div id="numbers">
-                <div onclick="onClickNumber('7')">7</div>
-                <div onclick="onClickNumber('8')">8</div>
-                <div onclick="onClickNumber('9')">9</div>
-                <div onclick="onClickNumber('4')">4</div>
-                <div onclick="onClickNumber('5')">5</div>
-                <div onclick="onClickNumber('6')">6</div>
-                <div onclick="onClickNumber('1')">1</div>
-                <div onclick="onClickNumber('2')">2</div>
-                <div onclick="onClickNumber('3')">3</div>
-                <div onclick="onClickNumber('.')">.</div>
-                <div onclick="onClickNumber('0')">0</div>
-                <div onclick="onClickEquals()">=</div>
+                <div onclick="klikNummer('7')">7</div>
+                <div onclick="klikNummer('8')">8</div>
+                <div onclick="klikNummer('9')">9</div>
+                <div onclick="klikNummer('4')">4</div>
+                <div onclick="klikNummer('5')">5</div>
+                <div onclick="klikNummer('6')">6</div>
+                <div onclick="klikNummer('1')">1</div>
+                <div onclick="klikNummer('2')">2</div>
+                <div onclick="klikNummer('3')">3</div>
+                <div onclick="klikNummer('.')">.</div>
+                <div onclick="klikNummer('0')">0</div>
+                <div onclick="klikEquals()">=</div>
             </div>
             <div id="operators">
-                <div onclick="onClickCancel()">C</div>
-                <div onclick="onClickOperator('+')">+</div>
-                <div onclick="onClickOperator('-')">-</div>
-                <div onclick="onClickOperator('*')">x</div>
-                <div onclick="onClickOperator('/')">/</div>
+                <div onclick="klikAnnuleer()">C</div>
+                <div onclick="klikOperator('+')">+</div>
+                <div onclick="klikOperator('-')">-</div>
+                <div onclick="klikOperator('*')">x</div>
+                <div onclick="klikOperator('/')">/</div>
             </div>
         </div>
     </div>
     <script>
-        // Gebruik van 'let' en 'const' voor variabelen
         const myInput = document.getElementById('result');
         const myOperator = document.getElementById('operator');
 
-        let currentInput = '';  // Huidige invoer (cijfers en punt)
-        let currentOperator = '';  // Huidige operator
-        let previousInput = '';  // Vorige invoer (voor het uitvoeren van de berekeningen)
+        let currentInput = '';
+        let currentOperator = '';
+        let previousInput = '';
 
-        // Functie voor het klikken op cijfers en punt
-        function onClickNumber(number) {
+        // functie voor cijfers
+        function klikNummer(number) {
             console.log('Nummer geklikt: ' + number);
-            currentInput += number;
-            myInput.value = currentInput;  // Bijwerken van het resultaat scherm
+            
+            // vervang "0" als eerste getal wordt ingevoerd
+            if (myInput.value === '0' || myInput.value === '') {
+                currentInput = number;
+            } else if (number === '.' && currentInput.indexOf('.') === -1) {
+                // voeg punt alleen toe als er nog geen punt is
+                currentInput += number;
+            } else if (number !== '0' || currentInput !== '0') {
+                // voeg cijfer toe behalve als het een extra nul is zonder ander cijfer ervoor
+                currentInput += number;
+            }
+
+            myInput.value = currentInput;  // bijwerken van resultaat
         }
 
-        // Functie voor het klikken op een operator
-        function onClickOperator(operator) {
-            console.log('Operator geklikt: ' + operator);
+        // functie voor de operators zoals +,-,*,/
+        function klikOperator(operator) {
+            console.log('operator geklikt: ' + operator);
 
+            // sla vorige invoer op en reset huidige invoer
             if (currentInput !== '') {
-                // Sla de vorige invoer op en reset de huidige invoer
                 previousInput = currentInput;
                 currentInput = '';
-                myOperator.value = operator;  // Bijwerken van het operator scherm
+                myOperator.value = operator;
                 currentOperator = operator;
             }
         }
 
-        // Functie voor het klikken op 'C' (Clear)
-        function onClickCancel() {
-            console.log('Clear geklikt');
+        // functie voor clear
+        function klikAnnuleer() {
+            console.log('clear geklikt');
             currentInput = '';
             currentOperator = '';
             previousInput = '';
-            myInput.value = '';
+            myInput.value = '0';
             myOperator.value = '';
         }
 
-        // Functie voor het klikken op '=' (equals)
-        function onClickEquals() {
-            console.log('Equals geklikt');
+        // functie voor het klikken op =
+        function klikEquals() {
+            console.log('= geklikt');
             if (previousInput !== '' && currentInput !== '' && currentOperator !== '') {
                 let result;
                 const num1 = parseFloat(previousInput);
                 const num2 = parseFloat(currentInput);
 
-                // Berekeningen op basis van de operator
+                // berekeningen op basis van de operator
                 switch (currentOperator) {
                     case '+':
                         result = num1 + num2;
@@ -177,10 +187,10 @@
                         break;
                 }
 
-                myInput.value = result;  // Bijwerken van het resultaat scherm
-                myOperator.value = '';  // Reset de operator na het berekenen
-                currentInput = result.toString();  // Zet de uitkomst als de nieuwe invoer
-                previousInput = '';  // Reset de vorige invoer na het berekenen
+                myInput.value = result;  // bijwerken van resultaat
+                myOperator.value = '';  // reset operator na berekenen
+                currentInput = result.toString();  // uitkomst als nieuwe invoer
+                previousInput = '';  // reset vorige invoer na berekenen
             }
         }
     </script>
