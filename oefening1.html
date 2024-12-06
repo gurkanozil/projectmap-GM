@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Pop-up interactie</h1>
+    <p id="welkom"></p>
+
+    <script>
+        // Functie die na pagina geladen is pop-up toont
+        window.onload = function() {
+            let naam = '';
+
+            // Pop-up "Pagina geladen"
+            alert('Pagina geladen');
+
+            // Vraag om naam na het sluiten van de eerste pop-up
+            while (true) {
+                naam = prompt('Wat is uw naam?');
+
+                // Als de naam is ingevuld
+                if (naam) {
+                    // Vraag om bevestiging van de naam
+                    let isCorrect = confirm('Uw naam is ' + naam + ', is dit correct?');
+
+                    // Als de naam correct is, breek de lus
+                    if (isCorrect) {
+                        break;
+                    }
+                }
+            }
+
+            // Zet de welkomsttekst op de pagina
+            document.getElementById('welkom').innerText = 'Welkom ' + naam + ', een fijne dag gewenst!';
+        }
+    </script>
+</body>
+</html>
